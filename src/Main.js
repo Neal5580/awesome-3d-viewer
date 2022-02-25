@@ -14,18 +14,23 @@ let stopRotate = false;
 
 const files = ['f22', 'f117', 'efa', 'drone', 'crab'];
 
-Promise.all(files.map((e) =>
+// Load .obj files and .png images beforehand
+Promise.all(files.map(e =>
     fetch(`./assets/models/${e}.obj`)
         .then(response => response.text())
-        .catch((e) => console.error(e))))
+        .catch(e => console.error(e))))
+    .then(list => Promise.all(list.map((t, i) => new Promise((resolve, reject) => {
+        const data = parseOBJ(t);
+        // Fix texture coordinate issue to avoid flipping horizontally
+        data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
+        const textureFile = new Image();
+        textureFile.onload = e => resolve({ name: files[i], ...data, textureFile });
+        textureFile.onerror = e => reject(e);
+        textureFile.src = `assets/textures/${files[i]}.png`;
+    }))))
     .then(list => {
-        models = list.map((text, index) => {
-            const data = parseOBJ(text);
-            // Fix texture coordinate issue to avoid flipping horizontally
-            data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
-            return { name: files[index], ...data }
-        });
-        main();
+        models = list;
+        main(); // Start
     })
     .catch((e) => console.error(e));
 

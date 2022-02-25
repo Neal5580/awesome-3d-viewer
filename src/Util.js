@@ -16,15 +16,11 @@ function createBufferObject({ target, data }) {
 }
 
 // Load texture
-function loadTexture(url) {
+function loadTexture(textureFile) {
     const texture = gl.createTexture();
-    const image = new Image();
-    image.onload = e => {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-        gl.generateMipmap(gl.TEXTURE_2D);
-    };
-    image.src = url;
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textureFile);
+    gl.generateMipmap(gl.TEXTURE_2D);
     return texture;
 }
 
@@ -61,7 +57,7 @@ function load_mesh(light) {
             textureUV: models[modelIndex].texcoord // uvData    
         }),
         texture: new Texture({
-            path: `assets/textures/${models[modelIndex].name}.png`,
+            textureFile: models[modelIndex].textureFile,
             textureSlot: gl.TEXTURE0,
             textureType: gl.TEXTURE_2D
         }),
