@@ -2,6 +2,8 @@ This is my homemade WebGL 3D engine with vanilla JavaScript.
 
 Demo site: https://neal5580.github.io/awesome-3d-viewer/
 
+It requires using a basic HTTP web server (a NodeJS Express server) since it loads resources via Fetch API (AJAX).
+
 Here are tips on how to play it:
 - Key "1 - 5" to change models
 - Key "Z" to switch camera mode (orthographic / perspective)
