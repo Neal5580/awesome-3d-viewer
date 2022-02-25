@@ -1,10 +1,9 @@
 ## Awesome 3D Viewer ##
  
-This is my homemade WebGL 3D engine with vanilla JavaScript. It does not use any 3D library like Three.js.
-
-It requires using a basic HTTP web server (a NodeJS Express server) since it loads resources via Fetch API (AJAX).
+This is my homemade WebGL 3D engine with vanilla JavaScript. It does not use any 3D libraries like Three.js.
 
 ### How do I start locally? ###  
+It requires using a basic HTTP web server (a NodeJS Express server) since it loads resources via Fetch API (AJAX).
 * Site: localhost:3000
 * Command: $ node server.js
     
