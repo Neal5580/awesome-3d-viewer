@@ -24,7 +24,7 @@ Promise.all(files.map(e =>
         // Fix texture coordinate issue to avoid flipping horizontally
         data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
         const textureFile = new Image();
-        textureFile.onload = e => resolve({ name: files[i], ...data, textureFile });
+        textureFile.onload = () => resolve({ name: files[i], ...data, textureFile });
         textureFile.onerror = e => reject(e);
         textureFile.src = `assets/textures/${files[i]}.png`;
     }))))
