@@ -115,7 +115,7 @@ class Mesh {
         gl.uniformMatrix4fv(uniformLocations.normalMatrix, false, this.modelMatrix);
 
         if (light) {
-            gl.drawArrays(is_lines ? gl.LINES : gl.TRIANGLES, 0, this.vertices.position.length / 3);
+            gl.drawArrays(isLine ? gl.LINES : gl.TRIANGLES, 0, this.vertices.position.length / 3);
         } else {
             gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
         }

@@ -17,6 +17,7 @@ class Camera {
         document.addEventListener('mousemove', this.handleMouseMove.bind(this))
         document.addEventListener('mouseup', this.handleMouseUp.bind(this))
         document.addEventListener("contextmenu", e => e.preventDefault());
+        document.addEventListener('click', this.handleClick.bind(this))
     }
 
     updateCameraMatrix() {
@@ -43,6 +44,10 @@ class Camera {
             const h = this.canvas.height / this.ortho_fov
             mat4.ortho(this.projectionMatrix, -w, w, -h, h, -10, 1000);
         }
+    }
+
+    handleClick() {
+        stopRotate = !stopRotate;
     }
 
     handleKeyDown(e) {
@@ -76,7 +81,7 @@ class Camera {
             modelIndex = 4
             load_mesh(light)
         } else if (e.keyCode === 88) {// X key
-            is_lines = !is_lines;
+            isLine = !isLine;
         }
     }
 

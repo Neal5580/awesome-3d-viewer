@@ -9,7 +9,8 @@ let models;
 let mesh;
 let light;
 let modelIndex = 0;
-let is_lines = false;
+let isLine = false;
+let stopRotate = false;
 
 const files = ['f22', 'f117', 'efa', 'drone', 'crab'];
 
@@ -57,9 +58,9 @@ function main() {
         resizeCanvas(canvas);
         camera.updateCameraMatrix()
 
-        // mat4.rotateZ(mesh.modelMatrix, mesh.modelMatrix, Math.PI / 2 / 70);
-        // mat4.rotateX(mesh.modelMatrix, mesh.modelMatrix, Math.PI / 2 / 70);
-        mat4.rotateY(mesh.modelMatrix, mesh.modelMatrix, Math.PI / 2 / 70);
+        if (!stopRotate) {
+            mat4.rotateY(mesh.modelMatrix, mesh.modelMatrix, Math.PI / 2 / 70);
+        }
         light.orbit()
 
         mesh.draw({ camera, light });
