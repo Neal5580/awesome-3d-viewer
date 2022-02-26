@@ -85,7 +85,8 @@ class Mesh {
             textureID: gl.getUniformLocation(this.shaderProgram, 'textureID'),
             lightColor: gl.getUniformLocation(this.shaderProgram, 'lightColor'),
             lightPosition: gl.getUniformLocation(this.shaderProgram, 'lightPosition'),
-            cameraPosition: gl.getUniformLocation(this.shaderProgram, 'cameraPosition')
+            cameraPosition: gl.getUniformLocation(this.shaderProgram, 'cameraPosition'),
+            isTriangle: gl.getUniformLocation(this.shaderProgram, 'isTriangle')
         }
 
         // Set texture to texture slot 0
@@ -113,9 +114,10 @@ class Mesh {
         }
         gl.uniformMatrix4fv(uniformLocations.matrix, false, this.mvpMatrix);
         gl.uniformMatrix4fv(uniformLocations.normalMatrix, false, this.modelMatrix);
+        gl.uniform1i(uniformLocations.isTriangle, drawMode === gl.TRIANGLES);
 
         if (light) {
-            gl.drawArrays(isLine ? gl.LINES : gl.TRIANGLES, 0, this.vertices.position.length / 3);
+            gl.drawArrays(drawMode, 0, this.vertices.position.length / 3);
         } else {
             gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
         }

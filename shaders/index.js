@@ -6,7 +6,7 @@ const fragmentShader = `#version 300 es
     out vec4 myOutputColor;
 
     void main() {
-        myOutputColor  = lightColor;
+        myOutputColor = lightColor;
     }
 `;
 
@@ -43,7 +43,7 @@ const vertexShaderWithLights = `#version 300 es
     uniform vec3 lightPosition;
     uniform vec3 cameraPosition;
 
-    void main() { 
+    void main() {
         vUV = uv;
         vLightColor = lightColor;
         vLightPosition = lightPosition;
@@ -54,6 +54,8 @@ const vertexShaderWithLights = `#version 300 es
         // calculates current position 
         vCurrentPosition = (normalMatrix * vec4(position, 1.0)).xyz;
         gl_Position = matrix * vec4(position, 1);
+
+        gl_PointSize = 3.0; 
     }
 `;
 
@@ -66,36 +68,40 @@ const fragmentShaderWithLights = `#version 300 es
     in vec3 vCameraPosition;
     in vec3 vNormal;
     in mat4 vNormalMatrix;
-    in vec3 vCurrentPosition;
+    in vec3 vCurrentPosition; 
 
     uniform sampler2D textureID;
- 
+    uniform bool isTriangle;
     out vec4 myOutputColor;
 
     void main() {
-        // ambient lighting
-	    float ambient = 0.2;
+        if(!isTriangle == true){
+            myOutputColor = vec4(1, 1, 0, 1); // Output yellow points / lines
+        } else {
+            // ambient lighting
+	        float ambient = 0.2;
 
-        // diffuse lighting
-        vec3 worldNormal = (vNormalMatrix * vec4(vNormal, 1.0)).xyz;
-	    vec3 normal = normalize(vNormal);
-	    vec3 lightDirection = normalize(vLightPosition - vCurrentPosition);
-	    float diffuse = max(0.0, dot(worldNormal, lightDirection));
+            // diffuse lighting
+            vec3 worldNormal = (vNormalMatrix * vec4(vNormal, 1.0)).xyz;
+	        vec3 normal = normalize(vNormal);
+	        vec3 lightDirection = normalize(vLightPosition - vCurrentPosition);
+	        float diffuse = max(0.0, dot(worldNormal, lightDirection));
  
-        // specular lighting
-	    float specularLight = 5.0;
-	    vec3 viewDirection = normalize(vCameraPosition - vCurrentPosition); 
-	    vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
-	    float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0), 16.0);
-	    float specular = specAmount * specularLight;
+            // specular lighting
+	        float specularLight = 5.0;
+	        vec3 viewDirection = normalize(vCameraPosition - vCurrentPosition); 
+	        vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
+	        float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0), 16.0);
+	        float specular = specAmount * specularLight;
  
-        float vBrightness = diffuse + ambient + specular;
+            float vBrightness = diffuse + ambient + specular;
  
-        // outputs final color
-        vec4 texel = texture(textureID, vUV);
-        texel *= vLightColor;
-        texel.xyz *= vBrightness;
-        myOutputColor  = texel;
+            // outputs final color
+            vec4 texel = texture(textureID, vUV);
+            texel *= vLightColor;
+            texel.xyz *= vBrightness;
+            myOutputColor  = texel; 
+        } 
     }
 `;
 

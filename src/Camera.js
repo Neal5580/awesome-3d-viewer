@@ -55,6 +55,7 @@ class Camera {
         const cross = vec3.fromValues(0, 0, 0);
         vec3.cross(cross, this.rotation, this.up);
         vec3.normalize(cross, cross);
+
         if (e.keyCode === 87) { // W key
             vec3.sub(this.position, this.position, this.up);
         } else if (e.keyCode === 83) { // S key
@@ -81,7 +82,13 @@ class Camera {
             modelIndex = 4
             load_mesh(light)
         } else if (e.keyCode === 88) {// X key
-            isLine = !isLine;
+            if (drawMode === gl.TRIANGLES) {
+                drawMode = gl.POINTS
+            } else if (drawMode === gl.POINTS) {
+                drawMode = gl.LINES
+            } else {
+                drawMode = gl.TRIANGLES
+            }
         }
     }
 

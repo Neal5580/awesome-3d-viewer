@@ -5,11 +5,12 @@ canvas.height = window.innerHeight;
 const gl = canvas.getContext('webgl2');
 if (!gl) throw new Error('WebGL2 not supported');
 
+// App states
 let models;
 let mesh;
 let light;
 let modelIndex = 0;
-let isLine = false;
+let drawMode = gl.TRIANGLES;
 let stopRotate = false;
 
 const files = ['f22', 'f117', 'efa', 'drone', 'crab'];
@@ -66,10 +67,14 @@ function main() {
         if (!stopRotate) {
             mat4.rotateY(mesh.modelMatrix, mesh.modelMatrix, Math.PI / 2 / 70);
         }
-        light.orbit()
+        if (drawMode === gl.TRIANGLES) {
+            light.orbit()
+        }
 
         mesh.draw({ camera, light });
-        light.draw({ camera });
+        if (drawMode === gl.TRIANGLES) {
+            light.draw({ camera });
+        }
     }
 
     animate();
