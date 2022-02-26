@@ -14,7 +14,7 @@ It requires using a basic HTTP web server (a NodeJS Express server) since it loa
 * Key "X" to switch mode (triangles/points/line)
 * Mouse wheel to zoom in / out
 * Mouse right button + drag to change camera's lookAt point
-* Mouse left click to stop model rotation
+* Mouse left click to stop main model rotation
 
 ### Demo site: ### 
 https://neal5580.github.io/awesome-3d-viewer/
