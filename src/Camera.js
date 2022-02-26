@@ -8,7 +8,7 @@ class Camera {
         this.up = vec3.fromValues(0, 1, 0);
         this.viewMatrix = mat4.create();
         this.projectionMatrix = mat4.create();
-        this.ortho_fov = 100; // static fov factor
+        this.ortho_fov = 260; // static fov factor
         this.yaw = -135; // camera rotation horizontal angle in degree
         this.pitch = -35; // camera rotation vertcial angle in degree
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
