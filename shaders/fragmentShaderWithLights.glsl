@@ -16,19 +16,19 @@ out vec4 myOutputColor;
 
 void main() {
     if(!isTriangle == true) {
-         // Output yellow points / lines
+        // Output yellow points / lines
         myOutputColor = vec4(1, 1, 0, 1);
     } else {
-        // ambient lighting
+        // Ambient lighting
 	    float ambient = 0.2;
 
-        // diffuse lighting
+        // Diffuse lighting
         vec3 worldNormal = (normalMatrix * vec4(vNormal, 1.0)).xyz;
 	    vec3 normal = normalize(vNormal);
 	    vec3 lightDirection = normalize(lightPosition - vCurrentPosition);
 	    float diffuse = max(0.0, dot(worldNormal, lightDirection));
  
-        // specular lighting
+        // Specular lighting
 	    float specularLight = 5.0;
 	    vec3 viewDirection = normalize(cameraPosition - vCurrentPosition); 
 	    vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
@@ -37,7 +37,7 @@ void main() {
  
         float vBrightness = diffuse + ambient + specular;
  
-        // outputs final color
+        // Outputs final color
         vec4 texel = texture(textureID, vUV);
         texel *= lightColor;
         texel.xyz *= vBrightness;

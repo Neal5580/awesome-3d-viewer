@@ -22,7 +22,7 @@ void main() {
         gl_PointSize = 3.0; 
     }
 
-    // calculates current position 
+    // Calculates current position 
     vCurrentPosition = (normalMatrix * vec4(position, 1.0)).xyz;
     gl_Position = matrix * vec4(position, 1);
 }
