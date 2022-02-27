@@ -45,20 +45,20 @@ const resizeCanvas = (canvas) => {
 function load_mesh(light) {
     // Create shader for main object
     const shaderProgram = new ShaderProgram({
-        vertexCode: shaderObject.vertexShaderWithLights,
-        fragmentCode: shaderObject.fragmentShaderWithLights
+        vertexCode: shaders.vertexShaderWithLights,
+        fragmentCode: shaders.fragmentShaderWithLights
     })
     shaderProgram.init()
 
     // Create mesh for main object
     mesh = new Mesh({
         vertices: new Vertex({
-            position: models[files[modelIndex]].position, // vertexData,  
-            normal: models[files[modelIndex]].normal,// normalData,   
-            textureUV: models[files[modelIndex]].texcoord // uvData    
+            position: models[modelFiles[modelIndex]].position, // vertexData,  
+            normal: models[modelFiles[modelIndex]].normal,// normalData,   
+            textureUV: models[modelFiles[modelIndex]].texcoord // uvData    
         }),
         texture: new Texture({
-            textureFile: models[files[modelIndex]].textureFile,
+            textureFile: models[modelFiles[modelIndex]].textureFile,
             textureSlot: gl.TEXTURE0,
             textureType: gl.TEXTURE_2D
         }),

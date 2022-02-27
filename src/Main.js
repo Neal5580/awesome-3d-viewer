@@ -5,33 +5,44 @@ canvas.height = window.innerHeight;
 const gl = canvas.getContext('webgl2');
 if (!gl) throw new Error('WebGL2 not supported');
 
-const files = ['f22', 'f117', 'efa', 'drone', 'crab'];
+const modelFiles = ['f22', 'f117', 'efa', 'drone', 'crab'];
+const shaderFiles = [
+    'vertexShader',
+    'fragmentShader',
+    'vertexShaderWithLights',
+    'fragmentShaderWithLights'
+];
 
 // App states
 let models = {};
+let shaders = {};
 let mesh;
 let light;
 let modelIndex = 0;
 let drawMode = gl.TRIANGLES;
 let stopRotate = false;
 
-files.forEach(e => models[e] = { name: e });
+modelFiles.forEach(e => models[e] = { name: e });
+shaderFiles.forEach(e => shaders[e] = '');
 
 Promise.all([
-    // Load .obj files
-    Promise.all(files.map(e =>
+    // Load .glsl shader files
+    Promise.all(shaderFiles.map(e =>
+        fetch(`./shaders/${e}.glsl`)
+            .then(response => response.text())))
+        .then(list => list.map((t, i) => shaders[shaderFiles[i]] = t)),
+    // Load .obj model files
+    Promise.all(modelFiles.map(e =>
         fetch(`./assets/models/${e}.obj`)
             .then(response => response.text())))
-        .then(list => {
-            list.map((t, i) => {
-                const data = parseOBJ(t);
-                // Fix texture coordinates issue to avoid flipping horizontally
-                data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
-                models[files[i]] = { ...models[files[i]], ...data }
-            })
-        }),
+        .then(list => list.map((t, i) => {
+            const data = parseOBJ(t);
+            // Fix texture coordinates issue to avoid flipping horizontally
+            data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
+            models[modelFiles[i]] = { ...models[modelFiles[i]], ...data }
+        })),
     // Load .png textures
-    Promise.all(files.map(e => new Promise((resolve, reject) => {
+    Promise.all(modelFiles.map(e => new Promise((resolve, reject) => {
         const textureFile = new Image();
         textureFile.onload = () => {
             models[e]['textureFile'] = textureFile;
@@ -50,8 +61,8 @@ function main() {
 
     // Create shader for light
     const lightShaderProgram = new ShaderProgram({
-        vertexCode: shaderObject.vertexShader,
-        fragmentCode: shaderObject.fragmentShader
+        vertexCode: shaders.vertexShader,
+        fragmentCode: shaders.fragmentShader
     })
     lightShaderProgram.init()
 
