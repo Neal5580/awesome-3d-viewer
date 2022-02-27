@@ -18,15 +18,15 @@ class ShaderProgram {
         gl.shaderSource(vertexShader, this.vertexCode)
         gl.compileShader(vertexShader);
 
-        // create fragment shader
+        // Create fragment shader
         const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragmentShader, this.fragmentCode)
         gl.compileShader(fragmentShader);
 
-        // create  program
+        // Create  program
         this.program = gl.createProgram();
 
-        // attach shaders to this.program
+        // Attach shaders to this.program
         gl.attachShader(this.program, vertexShader);
         gl.attachShader(this.program, fragmentShader);
         gl.linkProgram(this.program);

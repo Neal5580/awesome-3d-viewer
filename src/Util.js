@@ -31,6 +31,7 @@ function activeTexture({ path, textureSlot, textureType }) {
     gl.bindTexture(gl.TEXTURE_2D, brick);
 }
 
+// Resize canvas to avoid canvas distortion
 const resizeCanvas = (canvas) => {
     const displayWidth = canvas.clientWidth;
     const displayHeight = canvas.clientHeight;

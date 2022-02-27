@@ -17,11 +17,11 @@ class Mesh {
     }
 
     init() {
-        // Vertex Array Object
+        // Create Vertex Array Object (VAO)
         this.VAO = gl.createVertexArray();
         gl.bindVertexArray(this.VAO);
 
-        // Vertex Buffer Object (VBO)
+        // Create Vertex Buffer Object (VBO)
         this.positionBuffer = createBufferObject({
             target: gl.ARRAY_BUFFER,
             data: new Float32Array(this.vertices.position)
@@ -41,7 +41,7 @@ class Mesh {
             })
         }
 
-        // Element Buffer Object (EBO)
+        // Create Element Buffer Object (EBO)
         if (this.indices) {
             createBufferObject({
                 target: gl.ELEMENT_ARRAY_BUFFER,
@@ -53,6 +53,7 @@ class Mesh {
             this.texture.active();
         }
 
+        // Set Vertex Array Object (VAO)
         createVertexArrayObject({
             name: 'position',
             program: this.shaderProgram,
@@ -104,9 +105,11 @@ class Mesh {
         gl.useProgram(this.shaderProgram);
         gl.bindVertexArray(this.VAO); // Re-enable the current VAO
 
+        // Get world matrix
         mat4.multiply(this.mvMatrix, camera.viewMatrix, this.modelMatrix);
         mat4.multiply(this.mvpMatrix, camera.projectionMatrix, this.mvMatrix);
 
+        // Update uniforms for shaders
         const uniformLocations = this.uniformLocations;
         gl.uniform3f(uniformLocations.cameraPosition, ...camera.position);
         if (light) {
@@ -117,8 +120,10 @@ class Mesh {
         gl.uniform1i(uniformLocations.isTriangle, drawMode === gl.TRIANGLES);
 
         if (light) {
+            // Draw main model object
             gl.drawArrays(drawMode, 0, this.vertices.position.length / 3);
         } else {
+            // Draw hardcoded light object
             gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
         }
     }

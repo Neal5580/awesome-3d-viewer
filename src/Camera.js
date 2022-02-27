@@ -27,9 +27,12 @@ class Camera {
         const z = Math.sin(glMatrix.toRadian(this.yaw)) * Math.cos(glMatrix.toRadian(this.pitch));
         vec3.normalize(this.rotation, [x, y, z]);
 
+        // Get target point by adding camera's position and rotation together
         const targetPoint = vec3.fromValues(0, 0, 0);
         vec3.add(targetPoint, this.position, this.rotation);
 
+        // Set view matrix based on camera's position and rotation
+        // So that everything will be in camera space where camera is always at the origin
         mat4.lookAt(this.viewMatrix, this.position, targetPoint, this.up);
         if (this.isPerspective) {
             mat4.perspective(
@@ -62,26 +65,26 @@ class Camera {
             vec3.add(this.position, this.position, this.up);
         } else if (e.keyCode === 65) { // A key
             vec3.add(this.position, this.position, cross);
-        } else if (e.keyCode === 68) {// D key
+        } else if (e.keyCode === 68) { // D key
             vec3.sub(this.position, this.position, cross);
-        } else if (e.keyCode === 90) {// Z key
+        } else if (e.keyCode === 90) { // Z key
             this.isPerspective = !this.isPerspective;
-        } else if (e.keyCode === 49) {// 1 key
+        } else if (e.keyCode === 49) { // 1 key
             modelIndex = 0
             load_mesh(light)
-        } else if (e.keyCode === 50) {// 2 key
+        } else if (e.keyCode === 50) { // 2 key
             modelIndex = 1
             load_mesh(light)
-        } else if (e.keyCode === 51) {// 3 key
+        } else if (e.keyCode === 51) { // 3 key
             modelIndex = 2
             load_mesh(light)
-        } else if (e.keyCode === 52) {// 4 key
+        } else if (e.keyCode === 52) { // 4 key
             modelIndex = 3
             load_mesh(light)
-        } else if (e.keyCode === 53) {// 5 key
+        } else if (e.keyCode === 53) { // 5 key
             modelIndex = 4
             load_mesh(light)
-        } else if (e.keyCode === 88) {// X key
+        } else if (e.keyCode === 88) { // X key
             if (drawMode === gl.TRIANGLES) {
                 drawMode = gl.POINTS
             } else if (drawMode === gl.POINTS) {
@@ -94,12 +97,14 @@ class Camera {
 
     handleMouseWheel(e) {
         if (this.isPerspective) {
+            // Transform camera based on camera's rotation for perspective view
             if (e.deltaY < 0) {
                 vec3.add(this.position, this.position, this.rotation);
             } else {
                 vec3.sub(this.position, this.position, this.rotation);
             }
         } else {
+            // Update fov angle for orthographic view
             if (e.deltaY < 0) {
                 this.ortho_fov += 50
             } else {
@@ -120,11 +125,13 @@ class Camera {
     handleMouseMove(e) {
         e.preventDefault();
         if (this.mouseDown) {
+            // Calculate mouse move delta value
             const deltaX = this.offsetX - e.offsetX;
             const deltaY = this.offsetY - e.offsetY;
             this.offsetX = e.offsetX;
             this.offsetY = e.offsetY;
 
+            // Update camera's pitch and yaw angle
             const mouseSensitivity = 0.1
             this.yaw += deltaX * mouseSensitivity;
             this.pitch -= deltaY * mouseSensitivity;
