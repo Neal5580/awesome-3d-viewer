@@ -5,35 +5,45 @@ canvas.height = window.innerHeight;
 const gl = canvas.getContext('webgl2');
 if (!gl) throw new Error('WebGL2 not supported');
 
+const files = ['f22', 'f117', 'efa', 'drone', 'crab'];
+
 // App states
-let models;
+let models = {};
 let mesh;
 let light;
 let modelIndex = 0;
 let drawMode = gl.TRIANGLES;
 let stopRotate = false;
 
-const files = ['f22', 'f117', 'efa', 'drone', 'crab'];
+files.forEach(e => models[e] = { name: e });
 
-// Load .obj files and .png images beforehand
-Promise.all(files.map(e =>
-    fetch(`./assets/models/${e}.obj`)
-        .then(response => response.text())
-        .catch(e => console.error(e))))
-    .then(list => Promise.all(list.map((t, i) => new Promise((resolve, reject) => {
-        const data = parseOBJ(t);
-        // Fix texture coordinate issue to avoid flipping horizontally
-        data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
+Promise.all([
+    // Load .obj files
+    Promise.all(files.map(e =>
+        fetch(`./assets/models/${e}.obj`)
+            .then(response => response.text())))
+        .then(list => {
+            list.map((t, i) => {
+                const data = parseOBJ(t);
+                // Fix texture coordinates issue to avoid flipping horizontally
+                data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
+                models[files[i]] = { ...models[files[i]], ...data }
+            })
+        })
+    ,
+    // Load .png textures
+    Promise.all(files.map(e => new Promise((resolve, reject) => {
         const textureFile = new Image();
-        textureFile.onload = () => resolve({ name: files[i], ...data, textureFile });
+        textureFile.onload = () => {
+            models[e]['textureFile'] = textureFile;
+            resolve();
+        }
         textureFile.onerror = e => reject(e);
-        textureFile.src = `assets/textures/${files[i]}.png`;
-    }))))
-    .then(list => {
-        models = list;
-        main(); // Start
-    })
-    .catch((e) => console.error(e));
+        textureFile.src = `assets/textures/${e}.png`;
+    })))
+])
+    .then(() => main()) // Start
+    .catch(e => console.error(e));
 
 function main() {
     // Create camera 

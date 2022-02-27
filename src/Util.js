@@ -52,12 +52,12 @@ function load_mesh(light) {
     // Create mesh for main object
     mesh = new Mesh({
         vertices: new Vertex({
-            position: models[modelIndex].position, // vertexData,  
-            normal: models[modelIndex].normal,// normalData,   
-            textureUV: models[modelIndex].texcoord // uvData    
+            position: models[files[modelIndex]].position, // vertexData,  
+            normal: models[files[modelIndex]].normal,// normalData,   
+            textureUV: models[files[modelIndex]].texcoord // uvData    
         }),
         texture: new Texture({
-            textureFile: models[modelIndex].textureFile,
+            textureFile: models[files[modelIndex]].textureFile,
             textureSlot: gl.TEXTURE0,
             textureType: gl.TEXTURE_2D
         }),
