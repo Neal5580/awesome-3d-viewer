@@ -29,8 +29,7 @@ Promise.all([
                 data.texcoord = data.texcoord.map((e, i) => i % 2 !== 0 ? 1 - e : e);
                 models[files[i]] = { ...models[files[i]], ...data }
             })
-        })
-    ,
+        }),
     // Load .png textures
     Promise.all(files.map(e => new Promise((resolve, reject) => {
         const textureFile = new Image();
