@@ -55,7 +55,7 @@ function load_mesh({ light, modelIndex, textureIndex = 0, position = vec3.fromVa
 }
 
 function load_military_aircrafts() {
-    load_mesh({ light, modelIndex: 0, textureIndex: 0, position: [3, 0, -3] });
-    load_mesh({ light, modelIndex: 1, textureIndex: 1, position: [0, 0, 0] });
+    load_mesh({ light, modelIndex: 0, textureIndex: 0, position: [0, 0, 0] });
+    load_mesh({ light, modelIndex: 1, textureIndex: 1, position: [3, 0, -3] });
     load_mesh({ light, modelIndex: 2, textureIndex: 2, position: [-3, 0, 3] });
 }
