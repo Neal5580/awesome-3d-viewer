@@ -8,7 +8,7 @@ It requires using a basic HTTP web server (a NodeJS Express server) since it loa
 * Command: `$ node server.js`
     
 ### Here are tips on how to play it: ### 
-* Key "1" to "5" to change models
+* Key "1" to "6" to change models
 * Key "W", "A", "S", "D" to move camera position
 * Key "Z" to switch camera mode (orthographic/perspective)
 * Key "X" to switch mode (triangles/points/line)

@@ -3,17 +3,21 @@ class Mesh {
         vertices,
         indices,
         texture,
-        shaderProgram
+        shaderProgram,
+        position
     }) {
         this.vertices = vertices;
         this.indices = indices;
         this.texture = texture;
         this.shaderProgram = shaderProgram;
+        this.position = vec3.fromValues(...position);
 
         this.modelMatrix = mat4.create();  // model matrix
         this.mvMatrix = mat4.create(); // model view matrix
         this.mvpMatrix = mat4.create(); // final matrix to shader 
-        this.normalMatrix = mat4.create(); // It is same as model matrix
+        this.normalMatrix = mat4.create(); // It is same as model matrix 
+
+        mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
     }
 
     init() {
@@ -87,12 +91,13 @@ class Mesh {
             lightColor: gl.getUniformLocation(this.shaderProgram, 'lightColor'),
             lightPosition: gl.getUniformLocation(this.shaderProgram, 'lightPosition'),
             cameraPosition: gl.getUniformLocation(this.shaderProgram, 'cameraPosition'),
+            disableLight: gl.getUniformLocation(this.shaderProgram, 'disableLight'),
             isTriangle: gl.getUniformLocation(this.shaderProgram, 'isTriangle')
         }
 
-        // Set texture to texture slot 0
+        // Set texture to texture slot (0 + textureIndex)
         if (this.uniformLocations.textureID) {
-            gl.uniform1i(this.uniformLocations.textureID, 0);
+            gl.uniform1i(this.uniformLocations.textureID, this.texture.textureIndex);
         }
 
         // Unbind all to prevent accidentally modifying them
@@ -117,6 +122,7 @@ class Mesh {
         }
         gl.uniformMatrix4fv(uniformLocations.matrix, false, this.mvpMatrix);
         gl.uniformMatrix4fv(uniformLocations.normalMatrix, false, this.modelMatrix);
+        gl.uniform1i(uniformLocations.disableLight, drawMode === gl.TRIANGLES && disableLight);
         gl.uniform1i(uniformLocations.isTriangle, drawMode === gl.TRIANGLES);
 
         if (light) {
@@ -125,6 +131,12 @@ class Mesh {
         } else {
             // Draw hardcoded light object
             gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+        }
+    }
+
+    rotate() {
+        if (!stopRotate) {
+            mat4.rotateY(this.modelMatrix, this.modelMatrix, Math.PI / 2 / 70);
         }
     }
 }

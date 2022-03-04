@@ -59,6 +59,12 @@ class Camera {
         vec3.cross(cross, this.rotation, this.up);
         vec3.normalize(cross, cross);
 
+        function update_model(modelIndex) {
+            meshes = [];
+            disableLight = false;
+            load_mesh({ light, modelIndex: modelIndex });
+        }
+
         if (e.keyCode === 87) { // W key
             vec3.sub(this.position, this.position, this.up);
         } else if (e.keyCode === 83) { // S key
@@ -70,20 +76,19 @@ class Camera {
         } else if (e.keyCode === 90) { // Z key
             this.isPerspective = !this.isPerspective;
         } else if (e.keyCode === 49) { // 1 key
-            modelIndex = 0
-            load_mesh(light)
+            meshes = [];
+            disableLight = true;
+            load_military_aircrafts();
         } else if (e.keyCode === 50) { // 2 key
-            modelIndex = 1
-            load_mesh(light)
+            update_model(0);
         } else if (e.keyCode === 51) { // 3 key
-            modelIndex = 2
-            load_mesh(light)
+            update_model(1);
         } else if (e.keyCode === 52) { // 4 key
-            modelIndex = 3
-            load_mesh(light)
+            update_model(2);
         } else if (e.keyCode === 53) { // 5 key
-            modelIndex = 4
-            load_mesh(light)
+            update_model(3);
+        } else if (e.keyCode === 54) { // 6 key
+            update_model(4);
         } else if (e.keyCode === 88) { // X key
             if (drawMode === gl.TRIANGLES) {
                 drawMode = gl.POINTS

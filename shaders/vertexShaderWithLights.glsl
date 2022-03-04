@@ -11,6 +11,7 @@ out vec3 vCurrentPosition;
 
 uniform mat4 matrix;
 uniform mat4 normalMatrix; 
+uniform bool disableLight;
 uniform bool isTriangle;
 
 void main() {

@@ -16,11 +16,11 @@ const shaderFiles = [
 // App states
 let models = {};
 let shaders = {};
-let mesh;
+let meshes = [];
 let light;
-let modelIndex = 0;
 let drawMode = gl.TRIANGLES;
 let stopRotate = false;
+let disableLight = true;
 
 modelFiles.forEach(e => models[e] = { name: e });
 shaderFiles.forEach(e => shaders[e] = '');
@@ -69,7 +69,7 @@ function main() {
     // Create mesh for light  
     light = new Light({
         color: vec4.fromValues(1, 1, 1, 1),
-        position: vec3.fromValues(0, 2, 1.5),
+        position: vec3.fromValues(0, 1, 1),
         vertices: new Vertex({ position: lightVertexData }),
         indices,
         shaderProgram: lightShaderProgram.program
@@ -77,23 +77,21 @@ function main() {
     light.init();
     gl.uniform4f(light.uniformLocations.lightColor, ...light.color);
 
-    load_mesh(light);
+    load_military_aircrafts();
 
     function animate() {
         requestAnimationFrame(animate);
         resizeCanvas(canvas);
-        camera.updateCameraMatrix()
+        camera.updateCameraMatrix();
 
-        if (!stopRotate) {
-            mat4.rotateY(mesh.modelMatrix, mesh.modelMatrix, Math.PI / 2 / 70);
-        }
-        if (drawMode === gl.TRIANGLES) {
-            light.orbit()
-        }
-
-        mesh.draw({ camera, light });
-        if (drawMode === gl.TRIANGLES) {
+        if (drawMode === gl.TRIANGLES && !disableLight) {
+            light.orbit();
             light.draw({ camera });
+        }
+
+        for (const mesh of meshes) {
+            mesh.rotate();
+            mesh.draw({ camera, light });
         }
     }
 

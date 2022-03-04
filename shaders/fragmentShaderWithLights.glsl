@@ -6,6 +6,7 @@ in vec3 vNormal;
 in vec3 vCurrentPosition; 
 
 uniform sampler2D textureID;
+uniform bool disableLight;
 uniform bool isTriangle;
 uniform mat4 normalMatrix;
 uniform vec4 lightColor;
@@ -18,6 +19,9 @@ void main() {
     if(!isTriangle == true) {
         // Output yellow points / lines
         myOutputColor = vec4(1, 1, 0, 1);
+    } else if (disableLight == true) {
+        vec4 texel = texture(textureID, vUV); 
+        myOutputColor = texel; 
     } else {
         // Ambient lighting
 	    float ambient = 0.2;
@@ -29,7 +33,7 @@ void main() {
 	    float diffuse = max(0.0, dot(worldNormal, lightDirection));
  
         // Specular lighting
-	    float specularLight = 5.0;
+	    float specularLight = 8.0;
 	    vec3 viewDirection = normalize(cameraPosition - vCurrentPosition); 
 	    vec3 reflectionDirection = reflect(-lightDirection, worldNormal);
 	    float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0), 16.0);

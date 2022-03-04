@@ -15,22 +15,6 @@ function createBufferObject({ target, data }) {
     return buffer
 }
 
-// Load texture
-function loadTexture(textureFile) {
-    const texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textureFile);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    return texture;
-}
-
-// Active texture
-function activeTexture({ path, textureSlot, textureType }) {
-    const brick = loadTexture(`textures/invent-box-logo-512px.jpg`);
-    gl.activeTexture(gl.TEXTURE0); // active texture slot 0
-    gl.bindTexture(gl.TEXTURE_2D, brick);
-}
-
 // Resize canvas to avoid canvas distortion
 const resizeCanvas = (canvas) => {
     const displayWidth = canvas.clientWidth;
@@ -42,16 +26,15 @@ const resizeCanvas = (canvas) => {
     gl.viewport(0, 0, canvas.width, canvas.height);
 };
 
-function load_mesh(light) {
+function load_mesh({ light, modelIndex, textureIndex = 0, position = vec3.fromValues(0, 0, 0) }) {
     // Create shader for main object
     const shaderProgram = new ShaderProgram({
         vertexCode: shaders.vertexShaderWithLights,
         fragmentCode: shaders.fragmentShaderWithLights
-    })
-    shaderProgram.init()
-
+    });
+    shaderProgram.init();
     // Create mesh for main object
-    mesh = new Mesh({
+    const mesh = new Mesh({
         vertices: new Vertex({
             position: models[modelFiles[modelIndex]].position, // vertexData,  
             normal: models[modelFiles[modelIndex]].normal,// normalData,   
@@ -60,10 +43,19 @@ function load_mesh(light) {
         texture: new Texture({
             textureFile: models[modelFiles[modelIndex]].textureFile,
             textureSlot: gl.TEXTURE0,
-            textureType: gl.TEXTURE_2D
+            textureType: gl.TEXTURE_2D,
+            textureIndex
         }),
-        shaderProgram: shaderProgram.program
+        shaderProgram: shaderProgram.program,
+        position
     })
     mesh.init();
     gl.uniform4f(mesh.uniformLocations.lightColor, ...light.color);
+    meshes.push(mesh);
+}
+
+function load_military_aircrafts() {
+    load_mesh({ light, modelIndex: 0, textureIndex: 0, position: [3, 0, -3] });
+    load_mesh({ light, modelIndex: 1, textureIndex: 1, position: [0, 0, 0] });
+    load_mesh({ light, modelIndex: 2, textureIndex: 2, position: [-3, 0, 3] });
 }
