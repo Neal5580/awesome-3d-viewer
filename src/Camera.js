@@ -10,7 +10,7 @@ class Camera {
         this.projectionMatrix = mat4.create();
         this.ortho_fov = 260; // Static fov factor
         this.yaw = -135; // Camera rotation horizontal angle in degree
-        this.pitch = -35; // Camera rotation vertcial angle in degree
+        this.pitch = -37; // Camera rotation vertcial angle in degree
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('wheel', this.handleMouseWheel.bind(this));
         document.addEventListener('mousedown', this.handleMouseDown.bind(this))

@@ -26,7 +26,14 @@ const resizeCanvas = (canvas) => {
     gl.viewport(0, 0, canvas.width, canvas.height);
 };
 
-function load_mesh({ light, modelIndex, textureIndex = 0, position = vec3.fromValues(0, 0, 0) }) {
+function load_mesh({
+    light,
+    modelIndex,
+    textureIndex = 0,
+    position = vec3.fromValues(0, 0, 0),
+    rotation = 0,
+    isRunway = false
+}) {
     // Create shader for main object
     const shaderProgram = new ShaderProgram({
         vertexCode: shaders.vertexShaderWithLights,
@@ -47,7 +54,9 @@ function load_mesh({ light, modelIndex, textureIndex = 0, position = vec3.fromVa
             textureIndex
         }),
         shaderProgram: shaderProgram.program,
-        position
+        position,
+        rotation,
+        isRunway
     })
     mesh.init();
     gl.uniform4f(mesh.uniformLocations.lightColor, ...light.color);
@@ -55,7 +64,8 @@ function load_mesh({ light, modelIndex, textureIndex = 0, position = vec3.fromVa
 }
 
 function load_military_aircrafts() {
-    load_mesh({ light, modelIndex: 0, textureIndex: 0, position: [0, 0, 0] });
-    load_mesh({ light, modelIndex: 1, textureIndex: 1, position: [3, 0, -3] });
-    load_mesh({ light, modelIndex: 2, textureIndex: 2, position: [-3, 0, 3] });
+    load_mesh({ light, modelIndex: 0, textureIndex: 0, position: [0, 0, 0] }); // f22
+    load_mesh({ light, modelIndex: 1, textureIndex: 1, position: [3, 0, -3] }); // f117
+    load_mesh({ light, modelIndex: 2, textureIndex: 2, position: [-3, 0, 3] }); // efa
+    load_mesh({ light, modelIndex: 5, textureIndex: 3, position: [0, -0.2, 0], rotation: -Math.PI / 4, isRunway: true }); // runway
 }

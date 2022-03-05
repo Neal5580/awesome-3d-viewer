@@ -5,7 +5,7 @@ canvas.height = window.innerHeight;
 const gl = canvas.getContext('webgl2');
 if (!gl) throw new Error('WebGL2 not supported');
 
-const modelFiles = ['f22', 'f117', 'efa', 'drone', 'crab'];
+const modelFiles = ['f22', 'f117', 'efa', 'drone', 'crab', 'runway'];
 const shaderFiles = [
     'vertexShader',
     'fragmentShader',
@@ -69,7 +69,7 @@ function main() {
     // Create mesh for light  
     light = new Light({
         color: vec4.fromValues(1, 1, 1, 1),
-        position: vec3.fromValues(0, 1, 1),
+        position: vec3.fromValues(0, 2, 2),
         vertices: new Vertex({ position: lightVertexData }),
         indices,
         shaderProgram: lightShaderProgram.program

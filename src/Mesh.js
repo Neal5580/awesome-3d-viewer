@@ -4,19 +4,26 @@ class Mesh {
         indices,
         texture,
         shaderProgram,
-        position
+        position,
+        rotation,
+        isRunway
     }) {
         this.vertices = vertices;
         this.indices = indices;
         this.texture = texture;
         this.shaderProgram = shaderProgram;
         this.position = vec3.fromValues(...position);
+        this.rotation = rotation;
+        this.isRunway = isRunway;
 
         this.modelMatrix = mat4.create();  // model matrix
         this.mvMatrix = mat4.create(); // model view matrix
         this.mvpMatrix = mat4.create(); // final matrix to shader 
         this.normalMatrix = mat4.create(); // It is same as model matrix 
 
+        if (this.rotation) {
+            mat4.rotateY(this.modelMatrix, this.modelMatrix, this.rotation);
+        }
         mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
     }
 
@@ -135,6 +142,7 @@ class Mesh {
     }
 
     rotate() {
+        if (this.isRunway) return;
         if (!stopRotate) {
             mat4.rotateY(this.modelMatrix, this.modelMatrix, Math.PI / 2 / 70);
         }
