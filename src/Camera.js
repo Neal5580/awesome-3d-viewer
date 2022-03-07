@@ -1,18 +1,22 @@
 class Camera {
     constructor({ canvasId, position, isPerspective = true }) {
-        this.isPerspective = isPerspective;
         this.canvasId = canvasId;
-        this.canvas = document.getElementById(canvasId)
+        this.canvas = document.getElementById(canvasId);
+
         this.position = vec3.fromValues(...position);
         this.rotation = vec3.fromValues(0, 0, -1);
         this.up = vec3.fromValues(0, 1, 0);
+        this.targetPoint = vec3.fromValues(0, 0, 0);
+
+        this.isPerspective = isPerspective;
+        this.orthoFov = 260;
+        this.perspFov = 55;
+
         this.viewMatrix = mat4.create();
         this.projectionMatrix = mat4.create();
-        this.orthoFov = 260; // Static fov factor
+
         this.prevYaw = this.yaw = -135; // Camera rotation horizontal angle in degree
         this.prevPitch = this.pitch = -37; // Camera rotation vertcial angle in degree
-        this.targetPoint = vec3.fromValues(0, 0, 0);
-        this.perspFov = 55;
 
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('wheel', this.handleMouseWheel.bind(this));
