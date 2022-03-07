@@ -26,7 +26,7 @@ const resizeCanvas = (canvas) => {
     gl.viewport(0, 0, canvas.width, canvas.height);
 };
 
-function load_mesh({
+function loadMesh({
     light,
     modelIndex,
     textureIndex = 0,
@@ -63,9 +63,9 @@ function load_mesh({
     meshes.push(mesh);
 }
 
-function load_military_aircrafts() {
-    load_mesh({ light, modelIndex: 0, textureIndex: 0, position: [0, 0, 0] }); // f22
-    load_mesh({ light, modelIndex: 1, textureIndex: 1, position: [3, 0, -3] }); // f117
-    load_mesh({ light, modelIndex: 2, textureIndex: 2, position: [-3, 0, 3] }); // efa
-    load_mesh({ light, modelIndex: 5, textureIndex: 3, position: [0, -0.2, 0], rotation: -Math.PI / 4, isRunway: true }); // runway
+function loadAircrafts() {
+    loadMesh({ light, modelIndex: 0, textureIndex: 0, position: [0, 0, 0] }); // f22
+    loadMesh({ light, modelIndex: 1, textureIndex: 1, position: [3, 0, -3] }); // f117
+    loadMesh({ light, modelIndex: 2, textureIndex: 2, position: [-3, 0, 3] }); // efa
+    loadMesh({ light, modelIndex: 5, textureIndex: 3, position: [0, -0.225, 0], rotation: -Math.PI / 4, isRunway: true }); // runway
 }

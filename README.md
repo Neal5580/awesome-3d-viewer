@@ -13,8 +13,11 @@ It requires using a basic HTTP web server (a NodeJS Express server) since it loa
 * Key "Z" to switch camera mode (orthographic/perspective)
 * Key "X" to switch mode (triangles/points/line)
 * Mouse wheel to zoom in / out
-* Mouse right button + drag to change camera's lookAt point
+* Mouse right button + drag to change camera's arcball rotation (orbit)
 * Mouse left click to stop main model rotation
+
+### Configeration:
+`ENABLE_LOOKAT` flag can be used to enable camera lookAt function instead of orbit. (Mouse right button + drag ) It defauls to false.
 
 ### Demo site: ### 
 https://neal5580.github.io/awesome-3d-viewer/

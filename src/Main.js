@@ -22,6 +22,9 @@ let drawMode = gl.TRIANGLES;
 let stopRotate = false;
 let disableLight = true;
 
+// Config
+const ENABLE_LOOKAT = false; // To enable camera lookAt function instead of orbit (Mouse right button + drag )
+
 modelFiles.forEach(e => models[e] = { name: e });
 shaderFiles.forEach(e => shaders[e] = '');
 
@@ -77,7 +80,7 @@ function main() {
     light.init();
     gl.uniform4f(light.uniformLocations.lightColor, ...light.color);
 
-    load_military_aircrafts();
+    loadAircrafts();
 
     function animate() {
         requestAnimationFrame(animate);
