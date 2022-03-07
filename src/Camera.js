@@ -163,7 +163,6 @@ class Camera {
     handleMouseMove(e) {
         e.preventDefault();
         if (this.mouseDown) {
-            const mouseSensitivity = 0.1
 
             // Calculate mouse move delta value
             const deltaX = this.offsetX - e.offsetX;
@@ -178,24 +177,31 @@ class Camera {
 
             // Update camera's pitch and yaw angle 
             if (ENABLE_LOOKAT) {
+                const mouseSensitivity = 0.1
+
                 this.yaw += deltaX * mouseSensitivity;
                 this.pitch -= deltaY * mouseSensitivity;
 
+                // Avoid singularities like Looking straight down/up
                 if (this.pitch > 89) this.pitch = 89;
                 if (this.pitch < -89) this.pitch = -89;
             } else {
+                const mouseSensitivity = 0.2
+
+                // To calculate dot value between cameraDirection and up vector
+                // If the dot value is -1 or 1, it means camera is looking straight down/up, which should be avoided
                 const cameraDirection = vec3.create();
                 vec3.sub(cameraDirection, this.position, this.targetPoint); // Vector from camera position to target point
                 vec3.normalize(cameraDirection, cameraDirection);
-                const f = vec3.dot(this.up, cameraDirection); // Dot value between cameraDirection and up vector
+                const f = vec3.dot(this.up, cameraDirection);
 
                 // Avoid singularities like Looking straight down/up
-                if (f > 0.95) {
-                    this.pitch -= 0.15;
+                if (f > 0.98) {
+                    this.pitch -= 0.2;
                     return;
                 }
-                if (f < -0.95) {
-                    this.pitch -= -0.15;
+                if (f < -0.98) {
+                    this.pitch -= -0.2;
                     return;
                 }
                 this.yaw += deltaX * mouseSensitivity;
@@ -212,7 +218,5 @@ class Camera {
 
         this.prevPitch = this.pitch;
         this.prevYaw = this.yaw;
-
-        this.which = -1;
     }
 }
