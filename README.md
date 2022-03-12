@@ -1,6 +1,7 @@
 ## Awesome 3D Viewer ##
- 
-This is my homemade WebGL 3D engine with vanilla JavaScript. It does not use any 3D libraries like Three.js and babylon.js.
+This is my homemade WebGL2 3D engine with vanilla JavaScript. It loads several .obj model files and textures with lights. More importantly, it does not use any 3D libraries like Three.js and babylon.js.
+
+The main purpose of this application is to demonstrate my strong understanding of the fundamentals of computer graphics and how to use modern graphics API to build an interactive web application.
 
 ### How do I start locally? ###  
 It requires using a basic HTTP web server (a NodeJS Express server) since it loads resources via Fetch API (AJAX).

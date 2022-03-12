@@ -13,7 +13,7 @@ canvas {
 
 .info {
     position: absolute;
-    top: 20px;
+    top: 19px;
     right: 20px;
     cursor: pointer;
     z-index: 1;
@@ -21,8 +21,8 @@ canvas {
 
 .github {
     position: absolute;
-    top: 60px;
-    right: 20px;
+    right: 60px;
+    top: 20px;
     cursor: pointer;
     z-index: 1;
 }
@@ -43,13 +43,17 @@ canvas {
     position: absolute;
     margin: 0 auto;
     height: fit-content;
-    width: 50vw;
+    width: 80vw;
+    max-width: 800px;
+    max-height: 70vh;
+    height: fit-content;
+    overflow: auto;
     transform: translateY(-50%);
     top: 50%;
     left: 0;
     right: 0;
-    padding: 20px 20px 40px 20px;
-    background-color: rgba(255,255,255,0.85);
+    padding: 15px 20px 40px 20px;
+    background-color: rgba(255,255,255,0.9);
     border: 1px solid rgba(0,0,0,.2);
     border-radius: 6px;
     box-shadow: 0 5px 15px #0000007f;

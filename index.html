@@ -1,5 +1,6 @@
 <!DOCTYPE <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,31 +15,34 @@
     <script src="src/Vertex.js" defer></script>
     <script src="src/Mesh.js" defer></script>
     <script src="src/Light.js" defer></script>
-    <script src="src/Shader.js" defer></script> 
-    <script src="src/Camera.js" defer></script> 
-    <script src="src/Util.js" defer></script> 
+    <script src="src/Shader.js" defer></script>
+    <script src="src/Camera.js" defer></script>
+    <script src="src/Util.js" defer></script>
     <script src="src/Main.js" defer></script>
 </head>
-<body> 
+
+<body>
     <canvas id="canvas"></canvas>
-    <a 
-        class="github" 
-        target="_blank" 
-        href="https://github.com/Neal5580/awesome-3d-viewer"
-    >
+    <a class="github" title="Github repository link" target="_blank"
+        href="https://github.com/Neal5580/awesome-3d-viewer">
         <img width="29px" src="assets/images/github.png" />
     </a>
     <div class="info">
-        <img width="30px" src="assets/images/about.png" />
+        <img width="33px" src="assets/images/about.png" />
     </div>
- 
+
     <div class="hide wrapper">
         <div class="container">
             <h1>Awesome 3D Viewer</h1>
-            This is my homemade WebGL2 3D engine with vanilla JavaScript. 
-            It loads several .obj model files and textures. 
-            More importantly, it does not use any 3D libraries like Three.js and babylon.js.
-
+            <p>This is my homemade WebGL2 3D engine with vanilla JavaScript.
+                It loads several .obj model files and textures with lights.
+                More importantly, it does not use any 3D libraries like Three.js and babylon.js.
+            </p>
+            <p>
+            </p>
+            The main purpose of this application is to demonstrate my strong understanding of the fundamentals of
+            computer graphics and how to use modern graphics API to build an interactive web application.
+            </p>
             <h2>Keyboard shortcuts:</h2>
             <div class="keyboard">
                 <div class="column right">
@@ -56,19 +60,19 @@
                     <span class="key">w</span>
                     <span class="key">a</span>
                     <span class="key">s</span>
-                    <span class="key">d</span> 
+                    <span class="key">d</span>
                 </div>
                 <div class="column">
                     Camera movement
-                </div> 
+                </div>
                 <div class="column right">
-                    <span class="key">z</span> 
+                    <span class="key">z</span>
                 </div>
                 <div class="column">
                     Projection mode switch (orthographic/perspective)
                 </div>
                 <div class="column right">
-                    <span class="key">x</span> 
+                    <span class="key">x</span>
                 </div>
                 <div class="column">
                     Drawing mode switch (triangles/points/lines)
@@ -77,19 +81,19 @@
             <h2>Mouse controls:</h2>
             <div class="keyboard">
                 <div class="column right">
-                    <span class="key">Scroll wheel in/out</span> 
+                    <span class="key">Scroll wheel in/out</span>
                 </div>
                 <div class="column">
-                   Zoom (in/out)
+                    Zoom (in/out)
                 </div>
                 <div class="column right">
-                    <span class="key">Right mouse button drag</span> 
+                    <span class="key">Right mouse button drag</span>
                 </div>
                 <div class="column">
                     Camera arcball rotation (orbit)
                 </div>
                 <div class="column right">
-                    <span class="key">Left mouse button click</span> 
+                    <span class="key">Left mouse button click</span>
                 </div>
                 <div class="column">
                     Enable/disable model rotation
@@ -98,4 +102,5 @@
         </div>
     </div>
 </body>
+
 </html>
