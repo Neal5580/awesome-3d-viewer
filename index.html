@@ -20,6 +20,82 @@
     <script src="src/Main.js" defer></script>
 </head>
 <body> 
-    <canvas id="canvas"></canvas> 
+    <canvas id="canvas"></canvas>
+    <a 
+        class="github" 
+        target="_blank" 
+        href="https://github.com/Neal5580/awesome-3d-viewer"
+    >
+        <img width="29px" src="assets/images/github.png" />
+    </a>
+    <div class="info">
+        <img width="30px" src="assets/images/about.png" />
+    </div>
+ 
+    <div class="hide wrapper">
+        <div class="container">
+            <h1>Awesome 3D Viewer</h1>
+            This is my homemade WebGL2 3D engine with vanilla JavaScript. 
+            It loads several .obj model files and textures. 
+            More importantly, it does not use any 3D libraries like Three.js and babylon.js.
+
+            <h2>Keyboard shortcuts:</h2>
+            <div class="keyboard">
+                <div class="column right">
+                    <span class="key">1</span>
+                    <span class="key">2</span>
+                    <span class="key">3</span>
+                    <span class="key">4</span>
+                    <span class="key">5</span>
+                    <span class="key">6</span>
+                </div>
+                <div class="column">
+                    Model change
+                </div>
+                <div class="column right">
+                    <span class="key">w</span>
+                    <span class="key">a</span>
+                    <span class="key">s</span>
+                    <span class="key">d</span> 
+                </div>
+                <div class="column">
+                    Camera movement
+                </div> 
+                <div class="column right">
+                    <span class="key">z</span> 
+                </div>
+                <div class="column">
+                    Projection mode switch (orthographic/perspective)
+                </div>
+                <div class="column right">
+                    <span class="key">x</span> 
+                </div>
+                <div class="column">
+                    Drawing mode switch (triangles/points/lines)
+                </div>
+            </div>
+            <h2>Mouse controls:</h2>
+            <div class="keyboard">
+                <div class="column right">
+                    <span class="key">Scroll wheel in/out</span> 
+                </div>
+                <div class="column">
+                   Zoom (in/out)
+                </div>
+                <div class="column right">
+                    <span class="key">Right mouse button drag</span> 
+                </div>
+                <div class="column">
+                    Camera arcball rotation (orbit)
+                </div>
+                <div class="column right">
+                    <span class="key">Left mouse button click</span> 
+                </div>
+                <div class="column">
+                    Enable/disable model rotation
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

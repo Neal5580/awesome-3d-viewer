@@ -1,10 +1,82 @@
 body {
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     background: linear-gradient(#f0f8ff, black);
+    color: #333;
 }
 
 canvas {
     /* border: 1px solid black; */
     width: 100%;
     height: 100%;
+}
+
+.info {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.github {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.hide {
+    display: none;
+}
+
+.wrapper{
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.container{
+    position: absolute;
+    margin: 0 auto;
+    height: fit-content;
+    width: 50vw;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 0;
+    right: 0;
+    padding: 20px 20px 40px 20px;
+    background-color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 15px #0000007f;
+}
+    
+.info:hover + .hide {
+    display: block;
+}
+
+.key {
+    background: #cfdbe5;
+    padding: 2px 5px;
+    border-radius: 3px;
+    min-width: 20px;
+    display: initial;
+    text-align: center;
+}
+
+.keyboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+ 
+.column {
+    padding: 5px 20px;
+}
+
+.right {
+    text-align: right;
 }
