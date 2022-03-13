@@ -92,10 +92,17 @@ class Camera {
         vec3.cross(cross, this.rotation, this.up);
         vec3.normalize(cross, cross);
 
+        // Create shader for main object
+        const shaderProgram = new ShaderProgram({
+            vertexCode: shaders.vertexShaderWithLights,
+            fragmentCode: shaders.fragmentShaderWithLights
+        });
+        shaderProgram.init();
+
         function updateModel(modelIndex) {
             meshes = [];
             disableLight = false;
-            loadMesh({ light, modelIndex: modelIndex });
+            loadMesh({ light, modelIndex: modelIndex, shaderProgram });
         }
 
         if (e.keyCode === 87) { // W key

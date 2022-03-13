@@ -28,7 +28,9 @@ canvas {
 }
 
 .hide {
-    display: none;
+    transition: .7s;
+    visibility: hidden;
+    opacity: 0
 }
 
 .wrapper{
@@ -37,6 +39,7 @@ canvas {
     top: 0;
     left: 0;
     position: absolute;
+
 }
 
 .container{
@@ -60,7 +63,8 @@ canvas {
 }
     
 .info:hover + .hide {
-    display: block;
+     opacity: 1;
+     visibility: visible;
 }
 
 .key {

@@ -132,6 +132,11 @@ class Mesh {
         gl.uniform1i(uniformLocations.disableLight, drawMode === gl.TRIANGLES && disableLight);
         gl.uniform1i(uniformLocations.isTriangle, drawMode === gl.TRIANGLES);
 
+        // Set texture to texture slot (0 + textureIndex)
+        if (uniformLocations.textureID) {
+            gl.uniform1i(uniformLocations.textureID, this.texture.textureIndex);
+        }
+
         if (light) {
             // Draw main model object
             gl.drawArrays(drawMode, 0, this.vertices.position.length / 3);

@@ -32,14 +32,9 @@ function loadMesh({
     textureIndex = 0,
     position = vec3.fromValues(0, 0, 0),
     rotation = 0,
-    isRunway = false
+    isRunway = false,
+    shaderProgram
 }) {
-    // Create shader for main object
-    const shaderProgram = new ShaderProgram({
-        vertexCode: shaders.vertexShaderWithLights,
-        fragmentCode: shaders.fragmentShaderWithLights
-    });
-    shaderProgram.init();
     // Create mesh for main object
     const mesh = new Mesh({
         vertices: new Vertex({
@@ -64,8 +59,41 @@ function loadMesh({
 }
 
 function loadAircrafts() {
-    loadMesh({ light, modelIndex: 0, textureIndex: 0, position: [0, 0, 0] }); // f22
-    loadMesh({ light, modelIndex: 1, textureIndex: 1, position: [3, 0, -3] }); // f117
-    loadMesh({ light, modelIndex: 2, textureIndex: 2, position: [-3, 0, 3] }); // efa
-    loadMesh({ light, modelIndex: 5, textureIndex: 3, position: [0, -0.225, 0], rotation: -Math.PI / 4, isRunway: true }); // runway
+    // Create shader for main object
+    const shaderProgram = new ShaderProgram({
+        vertexCode: shaders.vertexShaderWithLights,
+        fragmentCode: shaders.fragmentShaderWithLights
+    });
+    shaderProgram.init();
+
+    loadMesh({
+        light,
+        modelIndex: 0,
+        textureIndex: 0,
+        position: [0, 0, 0],
+        shaderProgram
+    }); // f22
+    loadMesh({
+        light,
+        modelIndex: 1,
+        textureIndex: 1,
+        position: [3, 0, -3],
+        shaderProgram
+    }); // f117
+    loadMesh({
+        light,
+        modelIndex: 2,
+        textureIndex: 2,
+        position: [-3, 0, 3],
+        shaderProgram
+    }); // efa
+    loadMesh({
+        light,
+        modelIndex: 5,
+        textureIndex: 3,
+        position: [0, -0.225, 0],
+        rotation: -Math.PI / 4,
+        isRunway: true,
+        shaderProgram
+    }); // runway
 }
