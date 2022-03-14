@@ -18,11 +18,15 @@ class Camera {
         this.prevYaw = this.yaw = -135; // Camera rotation horizontal angle in degree
         this.prevPitch = this.pitch = -37; // Camera rotation vertcial angle in degree
 
+        this.convert = new window.ColorToID(gl);
+        this.mouse = undefined;
+
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('wheel', this.handleMouseWheel.bind(this));
-        document.addEventListener('mousedown', this.handleMouseDown.bind(this))
-        document.addEventListener('mousemove', this.handleMouseMove.bind(this))
-        document.addEventListener('mouseup', this.handleMouseUp.bind(this))
+        document.addEventListener('mousedown', this.handleMouseDown.bind(this));
+        document.addEventListener('mousemove', this.handleMouseMove.bind(this));
+        document.addEventListener('mouseup', this.handleMouseUp.bind(this));
+        document.addEventListener('mouseout', () => this.mouse = undefined);
         document.addEventListener("contextmenu", e => e.preventDefault());
         document.addEventListener('click', this.handleClick.bind(this))
     }
@@ -92,16 +96,17 @@ class Camera {
         vec3.cross(cross, this.rotation, this.up);
         vec3.normalize(cross, cross);
 
-        // Create shader for main object
-        const shaderProgram = new ShaderProgram({
-            vertexCode: shaders.vertexShaderWithLights,
-            fragmentCode: shaders.fragmentShaderWithLights
-        });
-        shaderProgram.init();
-
         function updateModel(modelIndex) {
             meshes = [];
+            selectMeshes = [];
             disableLight = false;
+
+            // Create shader for main object
+            const shaderProgram = new ShaderProgram({
+                vertexCode: shaders.vertexShaderWithLights,
+                fragmentCode: shaders.fragmentShaderWithLights
+            });
+            shaderProgram.init();
             loadMesh({ light, modelIndex: modelIndex, shaderProgram });
         }
 
@@ -117,8 +122,9 @@ class Camera {
             this.isPerspective = !this.isPerspective;
         } else if (e.keyCode === 49) { // 1 key
             meshes = [];
+            selectMeshes = [];
             disableLight = true;
-            loadAircrafts();
+            initAircrafts();
         } else if (e.keyCode === 50) { // 2 key
             updateModel(0);
         } else if (e.keyCode === 51) { // 3 key
@@ -169,8 +175,8 @@ class Camera {
 
     handleMouseMove(e) {
         e.preventDefault();
+        this.mouse = e;
         if (this.mouseDown) {
-
             // Calculate mouse move delta value
             const deltaX = this.offsetX - e.offsetX;
             const deltaY = this.offsetY - e.offsetY;

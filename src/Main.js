@@ -17,10 +17,13 @@ const shaderFiles = [
 let models = {};
 let shaders = {};
 let meshes = [];
+let selectMeshes = [];
 let light;
 let drawMode = gl.TRIANGLES;
 let stopRotate = false;
 let disableLight = true;
+let camera;
+let selectedObjectId = 0; // Highlight object ID (pick feature)
 
 // Config
 const ENABLE_LOOKAT = false; // To enable camera lookAt function instead of orbit (Mouse right button + drag )
@@ -60,7 +63,7 @@ Promise.all([
 
 function main() {
     // Create camera 
-    const camera = new Camera({ canvasId: 'canvas', position: [5, 5, 5] })
+    camera = new Camera({ canvasId: 'canvas', position: [5, 5, 5] })
 
     // Create shader for light
     const lightShaderProgram = new ShaderProgram({
@@ -78,14 +81,19 @@ function main() {
         shaderProgram: lightShaderProgram.program
     })
     light.init();
-    gl.uniform4f(light.uniformLocations.lightColor, ...light.color);
+    gl.uniform4f(light.uniformLocations.staticColor, ...light.color);
 
-    loadAircrafts();
+    initAircrafts();
 
     function animate() {
         requestAnimationFrame(animate);
         resizeCanvas(canvas);
         camera.updateCameraMatrix();
+
+        // Only show it when user has disable light (loadAircrafts scene)
+        if (camera?.mouse?.offsetY && camera?.mouse?.offsetX && disableLight) {
+            updateSelectedObjectId();
+        }
 
         if (drawMode === gl.TRIANGLES && !disableLight) {
             light.orbit();

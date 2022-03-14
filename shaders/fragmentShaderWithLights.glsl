@@ -8,8 +8,9 @@ in vec3 vCurrentPosition;
 uniform sampler2D textureID;
 uniform bool disableLight;
 uniform bool isTriangle;
+uniform bool isSelected;
 uniform mat4 normalMatrix;
-uniform vec4 lightColor;
+uniform vec4 staticColor;
 uniform vec3 lightPosition;
 uniform vec3 cameraPosition;
 
@@ -19,8 +20,16 @@ void main() {
     if(!isTriangle == true) {
         // Output yellow points / lines
         myOutputColor = vec4(1, 1, 0, 1);
+    } else if(isSelected == true) {
+        // If the model is selected, then highlight it
+        vec4 texel = texture(textureID, vUV); 
+        float vBrightness = 1.0; // Bright ambient lighting
+        texel.xyz *= vBrightness;
+        myOutputColor = texel; 
     } else if (disableLight == true) {
         vec4 texel = texture(textureID, vUV); 
+        float vBrightness = 0.5; // Dark ambient lighting
+        texel.xyz *= vBrightness; 
         myOutputColor = texel; 
     } else {
         // Ambient lighting
@@ -43,7 +52,7 @@ void main() {
  
         // Outputs final color
         vec4 texel = texture(textureID, vUV);
-        texel *= lightColor;
+        texel *= staticColor;
         texel.xyz *= vBrightness;
         myOutputColor  = texel; 
     } 

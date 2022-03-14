@@ -6,7 +6,9 @@ class Mesh {
         shaderProgram,
         position,
         rotation,
-        isRunway
+        isRunway,
+        isSelectProgram,
+        modelIndex
     }) {
         this.vertices = vertices;
         this.indices = indices;
@@ -15,6 +17,8 @@ class Mesh {
         this.position = vec3.fromValues(...position);
         this.rotation = rotation;
         this.isRunway = isRunway;
+        this.isSelectProgram = isSelectProgram;
+        this.modelIndex = modelIndex;
 
         this.modelMatrix = mat4.create();  // model matrix
         this.mvMatrix = mat4.create(); // model view matrix
@@ -25,6 +29,10 @@ class Mesh {
             mat4.rotateY(this.modelMatrix, this.modelMatrix, this.rotation);
         }
         mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
+
+        // Convert ID as integter into RGBA color
+        const convert = new window.ColorToID(gl);
+        this.staticColor = convert.createColor(modelIndex + 1); // Model ID (starts at 1) 
     }
 
     init() {
@@ -72,7 +80,7 @@ class Mesh {
             size: 3
         });
 
-        if (this.uvBuffer) {
+        if (this.uvBuffer && !this.isSelectProgram) {
             createVertexArrayObject({
                 name: 'uv',
                 program: this.shaderProgram,
@@ -81,7 +89,7 @@ class Mesh {
             });
         }
 
-        if (this.normalBuffer) {
+        if (this.normalBuffer && !this.isSelectProgram) {
             createVertexArrayObject({
                 name: 'normal',
                 program: this.shaderProgram,
@@ -95,11 +103,12 @@ class Mesh {
             matrix: gl.getUniformLocation(this.shaderProgram, 'matrix'),
             normalMatrix: gl.getUniformLocation(this.shaderProgram, 'normalMatrix'),
             textureID: gl.getUniformLocation(this.shaderProgram, 'textureID'),
-            lightColor: gl.getUniformLocation(this.shaderProgram, 'lightColor'),
+            staticColor: gl.getUniformLocation(this.shaderProgram, 'staticColor'),
             lightPosition: gl.getUniformLocation(this.shaderProgram, 'lightPosition'),
             cameraPosition: gl.getUniformLocation(this.shaderProgram, 'cameraPosition'),
             disableLight: gl.getUniformLocation(this.shaderProgram, 'disableLight'),
-            isTriangle: gl.getUniformLocation(this.shaderProgram, 'isTriangle')
+            isTriangle: gl.getUniformLocation(this.shaderProgram, 'isTriangle'),
+            isSelected: gl.getUniformLocation(this.shaderProgram, 'isSelected')
         }
 
         // Set texture to texture slot (0 + textureIndex)
@@ -131,6 +140,15 @@ class Mesh {
         gl.uniformMatrix4fv(uniformLocations.normalMatrix, false, this.modelMatrix);
         gl.uniform1i(uniformLocations.disableLight, drawMode === gl.TRIANGLES && disableLight);
         gl.uniform1i(uniformLocations.isTriangle, drawMode === gl.TRIANGLES);
+        gl.uniform1i(
+            uniformLocations.isSelected,
+            // If the model is selected and it is not runaway model (modelIndex: 6)
+            selectedObjectId === this.modelIndex + 1 && this.modelIndex + 1 !== 6
+        );
+
+        if (this.isSelectProgram) {
+            gl.uniform4f(this.uniformLocations.staticColor, ...this.staticColor);
+        }
 
         // Set texture to texture slot (0 + textureIndex)
         if (uniformLocations.textureID) {

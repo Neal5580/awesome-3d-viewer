@@ -33,7 +33,8 @@ function loadMesh({
     position = vec3.fromValues(0, 0, 0),
     rotation = 0,
     isRunway = false,
-    shaderProgram
+    shaderProgram,
+    isSelectProgram = false
 }) {
     // Create mesh for main object
     const mesh = new Mesh({
@@ -51,14 +52,30 @@ function loadMesh({
         shaderProgram: shaderProgram.program,
         position,
         rotation,
-        isRunway
+        isRunway,
+        isSelectProgram,
+        modelIndex
     })
     mesh.init();
-    gl.uniform4f(mesh.uniformLocations.lightColor, ...light.color);
-    meshes.push(mesh);
+    if (isSelectProgram) {
+        selectMeshes.push(mesh)
+    } else {
+        gl.uniform4f(mesh.uniformLocations.staticColor, ...light.color);
+        meshes.push(mesh)
+    }
 }
 
-function loadAircrafts() {
+// Prepare and initialize Aircrafts scene
+function initAircrafts() {
+    // Create shader for select program (pick highlight feature)
+    const selectProgram = new ShaderProgram({
+        vertexCode: shaders.vertexShader,
+        fragmentCode: shaders.fragmentShader
+    })
+    selectProgram.init()
+
+    loadAircrafts({ shaderProgram: selectProgram, isSelectProgram: true });
+
     // Create shader for main object
     const shaderProgram = new ShaderProgram({
         vertexCode: shaders.vertexShaderWithLights,
@@ -66,26 +83,34 @@ function loadAircrafts() {
     });
     shaderProgram.init();
 
+    loadAircrafts({ shaderProgram });
+}
+
+// Load Aircrafts scene
+function loadAircrafts({ shaderProgram, isSelectProgram = false }) {
     loadMesh({
         light,
         modelIndex: 0,
         textureIndex: 0,
         position: [0, 0, 0],
-        shaderProgram
+        shaderProgram,
+        isSelectProgram
     }); // f22
     loadMesh({
         light,
         modelIndex: 1,
         textureIndex: 1,
         position: [3, 0, -3],
-        shaderProgram
+        shaderProgram,
+        isSelectProgram
     }); // f117
     loadMesh({
         light,
         modelIndex: 2,
         textureIndex: 2,
         position: [-3, 0, 3],
-        shaderProgram
+        shaderProgram,
+        isSelectProgram
     }); // efa
     loadMesh({
         light,
@@ -94,6 +119,33 @@ function loadAircrafts() {
         position: [0, -0.225, 0],
         rotation: -Math.PI / 4,
         isRunway: true,
-        shaderProgram
+        shaderProgram,
+        isSelectProgram
     }); // runway
+}
+
+//This method is used to update selected object from mouse position
+function updateSelectedObjectId() {
+    const convert = new window.ColorToID(gl);
+
+    // Draw scene by selectProgram shader to get pick object from mouse poisition
+    // And reset depth and color buffer after it is done
+    for (const mesh of selectMeshes) {
+        mesh.rotate();
+        mesh.draw({ camera, light });
+    }
+    const pixel = new window.Uint8Array(4);
+
+    // Convert the canvas coordinate system into an image coordinate system.
+    const mouse_y = canvas.clientHeight - camera.mouse.offsetY;
+    const mouse_x = camera.mouse.offsetX;
+
+    // Get the color value from the rendered color buffer.
+    gl.readPixels(mouse_x, mouse_y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+
+    // Convert RGBA color as pixel into integter to get ID of the selected object
+    selectedObjectId = convert.getID(pixel[0], pixel[1], pixel[2], pixel[3]);
+
+    // Clear depth and color buffer
+    gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 }
