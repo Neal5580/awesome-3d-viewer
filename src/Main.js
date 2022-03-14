@@ -21,9 +21,9 @@ let selectMeshes = [];
 let light;
 let drawMode = gl.TRIANGLES;
 let stopRotate = false;
-let disableLight = true;
+let disableLight = true; // Use this flag to tell if the scene is aircrafts scene
 let camera;
-let selectedObjectId = 0; // Highlight object ID (pick feature)
+let selectedObjectId = -1; // Highlight object ID (pick feature)
 
 // Config
 const ENABLE_LOOKAT = false; // To enable camera lookAt function instead of orbit (Mouse right button + drag )
@@ -90,9 +90,9 @@ function main() {
         resizeCanvas(canvas);
         camera.updateCameraMatrix();
 
-        // Only show it when user has disable light (loadAircrafts scene)
-        if (camera?.mouse?.offsetY && camera?.mouse?.offsetX && disableLight) {
-            updateSelectedObjectId();
+        // Only update selected object ID from mouse position when the scene is aircrafts
+        if (disableLight) {
+            updateSelectedObjectId(disableLight);
         }
 
         if (drawMode === gl.TRIANGLES && !disableLight) {

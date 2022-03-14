@@ -31,8 +31,7 @@ class Mesh {
         mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
 
         // Convert ID as integter into RGBA color
-        const convert = new window.ColorToID(gl);
-        this.staticColor = convert.createColor(modelIndex + 1); // Model ID (starts at 1) 
+        this.staticColor = colorMap[modelIndex]
     }
 
     init() {
@@ -142,8 +141,8 @@ class Mesh {
         gl.uniform1i(uniformLocations.isTriangle, drawMode === gl.TRIANGLES);
         gl.uniform1i(
             uniformLocations.isSelected,
-            // If the model is selected and it is not runaway model (modelIndex: 6)
-            selectedObjectId === this.modelIndex + 1 && this.modelIndex + 1 !== 6
+            // If the model is selected and it is not runaway model (modelIndex: 5)
+            selectedObjectId === this.modelIndex && this.modelIndex !== 5
         );
 
         if (this.isSelectProgram) {

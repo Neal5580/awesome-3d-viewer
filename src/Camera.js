@@ -18,7 +18,6 @@ class Camera {
         this.prevYaw = this.yaw = -135; // Camera rotation horizontal angle in degree
         this.prevPitch = this.pitch = -37; // Camera rotation vertcial angle in degree
 
-        this.convert = new window.ColorToID(gl);
         this.mouse = undefined;
 
         document.addEventListener('keydown', this.handleKeyDown.bind(this));

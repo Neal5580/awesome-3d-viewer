@@ -124,16 +124,34 @@ function loadAircrafts({ shaderProgram, isSelectProgram = false }) {
     }); // runway
 }
 
+const colorMap = [
+    [1, 1, 1, 1],
+    [1, 0, 0, 1],
+    [1, 0, 1, 1],
+    [0, 1, 1, 1],
+    [0, 0, 1, 1],
+    [0, 1, 0, 1],
+]
+
+function compareArrays(a, b) {
+    return a.every((e, i) => e === b[i])
+}
+
 //This method is used to update selected object from mouse position
 function updateSelectedObjectId() {
-    const convert = new window.ColorToID(gl);
-
     // Draw scene by selectProgram shader to get pick object from mouse poisition
     // And reset depth and color buffer after it is done
     for (const mesh of selectMeshes) {
         mesh.rotate();
         mesh.draw({ camera, light });
     }
+
+    // Stop execution if there is no mouse event
+    if (!camera?.mouse?.offsetY || !camera?.mouse?.offsetX) {
+        gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+        return;
+    };
+
     const pixel = new window.Uint8Array(4);
 
     // Convert the canvas coordinate system into an image coordinate system.
@@ -143,9 +161,14 @@ function updateSelectedObjectId() {
     // Get the color value from the rendered color buffer.
     gl.readPixels(mouse_x, mouse_y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
 
-    // Convert RGBA color as pixel into integter to get ID of the selected object
-    selectedObjectId = convert.getID(pixel[0], pixel[1], pixel[2], pixel[3]);
+    // Convert RGBA color as pixel into integter to get ID of the selected object 
+    selectedObjectId = colorMap.findIndex(
+        e => compareArrays(
+            e.map(e => e * 255), // Convert RGBA channels from [0-1] to [0-255]
+            pixel
+        ));
 
     // Clear depth and color buffer
     gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
 }
+
