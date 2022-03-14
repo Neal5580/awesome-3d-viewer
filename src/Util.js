@@ -26,6 +26,7 @@ const resizeCanvas = (canvas) => {
     gl.viewport(0, 0, canvas.width, canvas.height);
 };
 
+// Load everything that mesh needs
 function loadMesh({
     light,
     modelIndex,
@@ -124,7 +125,8 @@ function loadAircrafts({ shaderProgram, isSelectProgram = false }) {
     }); // runway
 }
 
-const colorMap = [
+// A list of colors for selected object
+const COLOR_MAP = [
     [1, 1, 1, 1],
     [1, 0, 0, 1],
     [1, 0, 1, 1],
@@ -133,6 +135,7 @@ const colorMap = [
     [0, 1, 0, 1],
 ]
 
+// Compare if two arrays has the same values
 function compareArrays(a, b) {
     return a.every((e, i) => e === b[i])
 }
@@ -162,7 +165,7 @@ function updateSelectedObjectId() {
     gl.readPixels(mouse_x, mouse_y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
 
     // Convert RGBA color as pixel into integter to get ID of the selected object 
-    selectedObjectId = colorMap.findIndex(
+    selectedObjectId = COLOR_MAP.findIndex(
         e => compareArrays(
             e.map(e => e * 255), // Convert RGBA channels from [0-1] to [0-255]
             pixel

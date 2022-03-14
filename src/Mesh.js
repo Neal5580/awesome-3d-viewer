@@ -31,7 +31,7 @@ class Mesh {
         mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
 
         // Convert ID as integter into RGBA color
-        this.staticColor = colorMap[modelIndex]
+        this.staticColor = COLOR_MAP[modelIndex]
     }
 
     init() {
