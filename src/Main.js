@@ -92,7 +92,7 @@ function main() {
 
         // Only update selected object ID from mouse position when the scene is aircrafts
         if (disableLight) {
-            updateSelectedObjectId(disableLight);
+            updateSelectedObjectId();
         }
 
         if (drawMode === gl.TRIANGLES && !disableLight) {

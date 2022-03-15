@@ -174,14 +174,13 @@ class Camera {
 
     handleMouseMove(e) {
         e.preventDefault();
-        this.mouse = e;
-        if (this.mouseDown) {
-            // Calculate mouse move delta value
-            const deltaX = this.offsetX - e.offsetX;
-            const deltaY = this.offsetY - e.offsetY;
-            this.offsetX = e.offsetX;
-            this.offsetY = e.offsetY;
+        // Calculate mouse move delta value
+        const deltaX = this.offsetX - e.offsetX;
+        const deltaY = this.offsetY - e.offsetY;
+        this.offsetX = e.offsetX;
+        this.offsetY = e.offsetY;
 
+        if (this.mouseDown) {
             if (!ENABLE_LOOKAT) {
                 this.prevPitch = this.pitch;
                 this.prevYaw = this.yaw;

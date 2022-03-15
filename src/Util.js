@@ -150,7 +150,7 @@ function updateSelectedObjectId() {
     }
 
     // Stop execution if there is no mouse event
-    if (!camera?.mouse?.offsetY || !camera?.mouse?.offsetX) {
+    if (!camera?.offsetY || !camera?.offsetX) {
         gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
         return;
     };
@@ -158,8 +158,8 @@ function updateSelectedObjectId() {
     const pixel = new window.Uint8Array(4);
 
     // Convert the canvas coordinate system into an image coordinate system.
-    const mouse_y = canvas.clientHeight - camera.mouse.offsetY;
-    const mouse_x = camera.mouse.offsetX;
+    const mouse_y = canvas.clientHeight - camera.offsetY;
+    const mouse_x = camera.offsetX;
 
     // Get the color value from the rendered color buffer.
     gl.readPixels(mouse_x, mouse_y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
